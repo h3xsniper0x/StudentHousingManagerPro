@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}إضافة شكوى جديدة{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-dark">
+                <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> إضافة شكوى جديدة</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="post">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                        {{ error }}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الموضوع</label>
+                        {{ form.type }}
+                        {% if form.type.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.type.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">تفاصيل الشكوى</label>
+                        {{ form.description }}
+                        <div class="form-text">يرجى وصف المشكلة بدقة لمساعدتنا في حلها سريعاً.</div>
+                        {% if form.description.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.description.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    {% if form.room %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">الغرفة (اختياري)</label>
+                        {{ form.room }}
+                        {% if form.room.errors %}
+                        <div class="text-danger small mt-1">
+                            {{ form.room.errors }}
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-4">
+                        <a href="{% url 'complaint_list' %}" class="btn btn-secondary me-md-2">إلغاء</a>
+                        <button type="submit" class="btn btn-warning px-4">إرسال الشكوى</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

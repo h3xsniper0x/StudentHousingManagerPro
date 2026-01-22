@@ -1,0 +1,186 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}لوحة تحكم المدير{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12 mb-4">
+        <h2 class="h4 text-gray-800">أهلاً بك يا مدير!</h2>
+    </div>
+</div>
+
+<!-- Stats Cards -->
+<div class="row g-4 mb-4 row-cols-1 row-cols-md-2 row-cols-xl-5">
+    <!-- Users -->
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-2">
+                <div class="card-icon bg-warning-soft text-warning">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1 small">المستخدمين</h6>
+                    <h3 class="card-title mb-0">{{ users_count }}</h3>
+                    <a href="{% url 'user_list' %}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Complaints -->
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-2">
+                <div class="card-icon bg-success-soft text-success">
+                    <i class="fas fa-paper-plane"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1 small">الشكاوى</h6>
+                    <h3 class="card-title mb-0">{{ complaints_count }}</h3>
+                    <a href="{% url 'complaint_list' %}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approved -->
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-2">
+                <div class="card-icon bg-info-soft text-info">
+                    <i class="fas fa-check"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1 small">مقبول</h6>
+                    <h3 class="card-title mb-0">{{ approved_count }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending -->
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-2">
+                <div class="card-icon bg-warning-soft text-warning">
+                    <i class="fas fa-info"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1 small">معلق</h6>
+                    <h3 class="card-title mb-0">{{ pending_count }}</h3>
+                    <a href="{% url 'application_list' %}" class="stretched-link"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejected -->
+    <div class="col">
+        <div class="card h-100">
+            <div class="card-body d-flex align-items-center gap-2">
+                <div class="card-icon bg-danger-soft text-danger">
+                    <i class="fas fa-trash"></i>
+                </div>
+                <div>
+                    <h6 class="card-subtitle text-muted mb-1 small">مرفوض</h6>
+                    <h3 class="card-title mb-0">{{ rejected_count }}</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row -->
+<div class="row g-4 mb-4">
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">نظرة عامة على الطلبات</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="applicationsChart" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">إشغال المباني</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="occupancyChart" height="250"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pending Applications Table -->
+<div class="card mb-4">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">إجراءات سريعة</h6>
+        <div>
+            <a href="{% url 'building_list' %}" class="btn btn-sm btn-outline-primary">إدارة المباني</a>
+            <a href="{% url 'service_list' %}" class="btn btn-sm btn-outline-primary">إدارة الخدمات</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+{{ app_labels|json_script:"app-labels-data" }}
+{{ app_data|json_script:"app-data-data" }}
+{{ occupancy_free|json_script:"occupancy-free-data" }}
+{{ occupancy_occupied|json_script:"occupancy-occupied-data" }}
+<script>
+    // Real data from database
+    const appLabels = JSON.parse(document.getElementById('app-labels-data').textContent);
+    const appData = JSON.parse(document.getElementById('app-data-data').textContent);
+
+    new Chart(document.getElementById("applicationsChart"), {
+        type: 'line',
+        data: {
+            labels: appLabels,
+            datasets: [{
+                data: appData,
+                label: "الطلبات",
+                borderColor: "#3498db",
+                backgroundColor: "rgba(52, 152, 219, 0.1)",
+                fill: true,
+                tension: 0.4
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true },
+                title: { display: false }
+            },
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+
+    new Chart(document.getElementById("occupancyChart"), {
+        type: 'doughnut',
+        data: {
+            labels: ["شاغر", "مشغول"],
+            datasets: [{
+                backgroundColor: ["#2ecc71", "#e74c3c"],
+                data: [
+                    JSON.parse(document.getElementById('occupancy-free-data').textContent),
+                    JSON.parse(document.getElementById('occupancy-occupied-data').textContent)
+                ]
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { position: 'bottom' }
+            }
+        }
+    });
+</script>
+{% endblock %}

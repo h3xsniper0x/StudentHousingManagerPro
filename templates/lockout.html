@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Account Locked{% endblock %}
+
+{% block auth_content %}
+<div class="container d-flex flex-column justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow-lg p-5 text-center border-0 rounded-4" style="max-width: 500px;">
+        <div class="mb-4">
+            <div class="icon-circle bg-danger bg-opacity-10 text-danger rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 80px; height: 80px;">
+                <i class="fas fa-user-lock fa-3x"></i>
+            </div>
+        </div>
+        <h2 class="fw-bold text-danger mb-3">Security Alert</h2>
+        <h4 class="fw-semibold mb-3">Account Temporarily Locked</h4>
+        <p class="text-secondary mb-4">
+            We noticed too many failed login attempts from your network. 
+            For security purposes, access has been temporarily suspended.
+        </p>
+        <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-warning-emphasis">
+            <i class="fas fa-clock me-2"></i> Please try again in 1 hour.
+        </div>
+        <div class="mt-4">
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary px-4 rounded-pill">Return to Home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Redirect for logged in users who somehow get here -->
+<script>window.location.href = "{% url 'home' %}";</script>
+{% endblock %}

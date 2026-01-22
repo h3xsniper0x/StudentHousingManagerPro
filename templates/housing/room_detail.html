@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Room Details{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Room {{ room.room_number }}</h4>
+                    <span class="badge bg-light text-info">{{ room.building.name }}</span>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center">
+                            <div class="display-4 fw-bold text-primary">{{ room.current_occupants }}/{{ room.capacity }}
+                            </div>
+                            <small class="text-muted">Occupancy</small>
+                        </div>
+                        <div class="col-md-8">
+                            <table class="table table-borderless">
+                                <tr>
+                                    <th>Building:</th>
+                                    <td><a href="{% url 'building_detail' room.building.pk %}">{{ room.building.name}}</a></td>
+                                            
+                                </tr>
+                                <tr>
+                                    <th>Status:</th>
+                                    <td>
+                                        {% if room.is_full %}
+                                        <span class="badge bg-danger">Full</span>
+                                        {% elif room.status == 'maintenance' %}
+                                        <span class="badge bg-warning text-dark">Maintenance</span>
+                                        {% else %}
+                                        <span class="badge bg-success">Available</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <h5 class="border-bottom pb-2">Current Occupants</h5>
+                    {% comment %}
+                    We need to access profiles or applications assigned to this room.
+                    Checking models: HousingApplication has assigned_room. StudentProfile has room.
+                    Let's use HousingApplication or StudentProfile reverse relation if available.
+                    StudentProfile has related_name 'student_profile' on user, but here we need room -> profiles.
+                    Room model doesn't have explicit reverse relation name in StudentProfile (default:
+                    studentprofile_set).
+                    {% endcomment %}
+
+                    {% if room.housingapplication_set.filter %}
+                    <div class="list-group">
+                        {% for app in room.housingapplication_set.all %}
+                        {% if app.status == 'accepted' and app.student %}
+                        <a href="{% url 'user_detail' app.student.pk %}"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong>{{ app.student.get_full_name }}</strong>
+                                <br>
+                                <small class="text-muted">{{ app.student.username }}</small>
+                            </div>
+                            <span class="badge bg-light text-dark">View Profile</span>
+                        </a>
+                        {% endif %}
+                        {% empty %}
+                        <p class="text-muted">No confirmed occupants found via applications.</p>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <p class="text-muted">Occupant list unavailable directly.</p>
+                    {% endif %}
+
+                </div>
+                <div class="card-footer bg-light d-flex justify-content-between">
+                    <a href="{% url 'room_list' %}" class="btn btn-secondary">Back to Rooms</a>
+                    {% if request.user.role == 'ADMIN' %}
+                    <a href="{% url 'room_update' room.pk %}" class="btn btn-primary">Edit Room</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

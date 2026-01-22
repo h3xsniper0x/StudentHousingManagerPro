@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">{{ title }}</h4>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">First Name</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Last Name</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Username *</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        {{ form.email }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Password *</label>
+                        {{ form.password }}
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Role *</label>
+                            {{ form.role }}
+                            <small class="text-muted">Select SUPERVISOR for employees</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Phone</label>
+                            {{ form.phone }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Student ID</label>
+                        {{ form.student_id }}
+                    </div>
+
+                    <div id="student-only-fields" style="display: none;">
+                        <h5 class="mt-4 mb-3 border-bottom pb-2">Student Housing Assignment</h5>
+
+                        <div class="mb-3">
+                            <label class="form-label">Supervisor *</label>
+                            {{ form.supervisor }}
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Building *</label>
+                                {{ form.building }}
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Room *</label>
+                                {{ form.room }}
+                                <small class="text-muted">Only available rooms are shown</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function () {
+                            const roleSelect = document.getElementById('id_role');
+                            const studentFields = document.getElementById('student-only-fields');
+
+                            function toggleFields() {
+                                if (roleSelect.value === 'STUDENT') {
+                                    studentFields.style.display = 'block';
+                                } else {
+                                    studentFields.style.display = 'none';
+                                }
+                            }
+
+                            roleSelect.addEventListener('change', toggleFields);
+                            toggleFields(); // Initial check
+                        });
+                    </script>
+
+                    {% if form.errors %}
+                    <div class="alert alert-danger">
+                        {% for field, errors in form.errors.items %}
+                        <strong>{{ field }}:</strong> {{ errors|join:", " }}<br>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            {% if is_edit %}Update User{% else %}Create User{% endif %}
+                        </button>
+                        <a href="{% url 'user_list' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

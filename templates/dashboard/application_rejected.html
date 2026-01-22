@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}حالة الطلب{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <div class="card shadow-lg border-danger">
+                <div class="card-body p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-times-circle text-danger" style="font-size: 80px;"></i>
+                    </div>
+                    <h2 class="text-danger mb-3">عذراً، تم رفض طلب التسكين</h2>
+                    <p class="lead text-muted">
+                        مرحباً {{ user.first_name }}، نأسف لإبلاغك بأن طلبك للسكن الجامعي لم يتم قبوله لهذه الفترة.
+                    </p>
+
+                    {% if application.rejection_reason %}
+                    <div class="alert alert-secondary mt-4 text-start">
+                        <strong>سبب الرفض:</strong><br>
+                        {{ application.rejection_reason }}
+                    </div>
+                    {% endif %}
+
+                    <div class="mt-5">
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">عودة للصفحة الرئيسية</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

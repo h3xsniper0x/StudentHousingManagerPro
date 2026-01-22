@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}Register{% endblock %}
+
+{% block auth_content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded-lg mt-5">
+            <div class="card-header bg-success text-white text-center py-4">
+                <h3 class="font-weight-light my-2">Student Registration</h3>
+            </div>
+            <!-- novalidate -->
+            <div class="card-body p-5">  
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                    <p class="mb-0">{{ error }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">First Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {% if form.first_name.errors %}is-invalid{% endif %}"
+                                name="first_name" value="{{ form.first_name.value|default_if_none:'' }}" required>
+                            {% if form.first_name.errors %}
+                            <div class="invalid-feedback">{{ form.first_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Last Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {% if form.last_name.errors %}is-invalid{% endif %}"
+                                name="last_name" value="{{ form.last_name.value|default_if_none:'' }}" required>
+                            {% if form.last_name.errors %}
+                            <div class="invalid-feedback">{{ form.last_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Username <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control {% if form.username.errors %}is-invalid{% endif %}"
+                            name="username" value="{{ form.username.value|default_if_none:'' }}" required>
+                        {% if form.username.errors %}
+                        <div class="invalid-feedback">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control {% if form.email.errors %}is-invalid{% endif %}"
+                            name="email" value="{{ form.email.value|default_if_none:'' }}">
+                        {% if form.email.errors %}
+                        <div class="invalid-feedback">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Password <span class="text-danger">*</span></label>
+                            <input type="password"
+                                class="form-control {% if form.password.errors %}is-invalid{% endif %}" name="password"
+                                required minlength="8">
+                            {% if form.password.errors %}
+                            <div class="invalid-feedback">{{ form.password.errors.0 }}</div>
+                            {% endif %}
+                            <small class="text-muted">At least 8 characters</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Confirm Password <span class="text-danger">*</span></label>
+                            <input type="password"
+                                class="form-control {% if form.password_confirm.errors %}is-invalid{% endif %}"
+                                name="password_confirm" required>
+                            {% if form.password_confirm.errors %}
+                            <div class="invalid-feedback">{{ form.password_confirm.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Phone <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control {% if form.phone.errors %}is-invalid{% endif %}"
+                                name="phone" required value="{{ form.phone.value|default_if_none:'' }}">
+                            {% if form.phone.errors %}
+                            <div class="invalid-feedback">{{ form.phone.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Gender</label>
+                            <select class="form-select {% if form.gender.errors %}is-invalid{% endif %}" name="gender">
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                            {% if form.gender.errors %}
+                            <div class="invalid-feedback">{{ form.gender.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Age <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control {% if form.age.errors %}is-invalid{% endif %}"
+                                name="age" value="{{ form.age.value|default_if_none:'' }}" required min="16" max="99">
+                            {% if form.age.errors %}
+                            <div class="invalid-feedback">{{ form.age.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Governorate <span class="text-danger">*</span></label>
+                            {{ form.governorate }}
+                            {% if form.governorate.errors %}
+                            <div class="invalid-feedback">{{ form.governorate.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Student ID <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control {% if form.student_id.errors %}is-invalid{% endif %}"
+                            name="student_id" value="{{ form.student_id.value|default_if_none:'' }}"
+                            placeholder="2XXXXXXX" maxlength="8" required>
+                        {% if form.student_id.errors %}
+                        <div class="invalid-feedback">{{ form.student_id.errors.0 }}</div>
+                        {% endif %}
+                        <small class="text-muted">Must be 8 digits, starting with 2</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Profile Photo <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" name="profile_image" accept="image/*" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">University ID Card Photo <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" name="university_card_image" accept="image/*" required>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button class="btn btn-success btn-lg" type="submit">Register</button>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer text-center py-3">
+                <div class="small"><a href="{% url 'login' %}">Have an account? Go to login</a></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% block scripts %}
+
+{% endblock %}
+{% endblock %}

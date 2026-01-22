@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Registration Successful{% endblock %}
+
+{% block auth_content %}
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center"
+    style="background-color: #1a202c;">
+    <div class="card shadow-lg" style="max-width: 500px; width: 100%;">
+        <div class="card-body text-center p-5">
+            <div class="mb-4">
+                <div class="rounded-circle bg-success d-inline-flex align-items-center justify-content-center"
+                    style="width: 80px; height: 80px;">
+                    <i class="fas fa-check text-white" style="font-size: 2.5rem;"></i>
+                </div>
+            </div>
+
+            <h2 class="text-success mb-3">تم التسجيل بنجاح!</h2>
+            <h5 class="text-muted mb-4">Registration Successful</h5>
+
+            <div class="alert alert-info text-start" dir="rtl">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>تم إرسال طلبك وهو الآن قيد المراجعة.</strong>
+                <hr>
+                <p class="mb-0 small">Your application is pending review by the administration. You will be notified
+                    once approved.</p>
+            </div>
+
+            <!-- Progress Stepper -->
+            <div class="row text-center mt-4 mb-4">
+                <div class="col">
+                    <div class="text-muted">
+                        <i class="fas fa-home fa-2x mb-2"></i>
+                        <div class="small fw-bold">في الانتظار</div>
+                        <div class="small">Awaiting</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="bg-warning-subtle p-2 rounded">
+                        <i class="fas fa-clock fa-2x text-warning mb-2"></i>
+                        <div class="small fw-bold">قيد المراجعة</div>
+                        <div class="small">Under Review</div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="text-success">
+                        <i class="fas fa-user-check fa-2x mb-2"></i>
+                        <div class="small fw-bold">تم الإرسال</div>
+                        <div class="small">Submitted</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2">
+
+                <form action="{% url 'logout' %}" method="post" class="d-grid">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-secondary">
+                        Logout & Login Later <i class="fas fa-sign-out-alt ms-2"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

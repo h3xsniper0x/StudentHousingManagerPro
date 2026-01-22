@@ -1,0 +1,40 @@
+<div class="top-navbar">
+    <div class="dropdown">
+        <button class="btn btn-light position-relative" type="button">
+            <i class="fas fa-bell"></i>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                3
+                <span class="visually-hidden">رسائل غير مقروءة</span>
+            </span>
+        </button>
+    </div>
+
+    <div class="dropdown">
+        <a class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" href="#" role="button"
+            data-bs-toggle="dropdown" aria-expanded="false">
+            {% if user.profile_photo %}
+            <img src="{{ user.profile_photo.url }}" class="rounded-circle" width="32" height="32" alt="Profile">
+            {% else %}
+            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                style="width: 32px; height: 32px;">
+                {{ user.username|make_list|first|upper }}
+            </div>
+            {% endif %}
+            <span>أهلاً، {{ user.first_name|default:user.username }}</span>
+        </a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'profile' %}"><i class="fas fa-user me-2"></i> الملف الشخصي</a>
+            </li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li>
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="dropdown-item text-danger"><i class="fas fa-sign-out-alt me-2"></i>
+                        تسجيل الخروج</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</div>

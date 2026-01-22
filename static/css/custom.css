@@ -1,0 +1,140 @@
+/* Fonts */
+body {
+  font-family: 'Inter', 'Cairo', 'Tajawal', sans-serif;
+  background-color: #f4f6f9;
+  /* Light grey background */
+  color: #5a5c69;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Base Layout */
+.main-content {
+  margin-right: 250px;
+  padding: 20px;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    margin-right: 0;
+  }
+}
+
+/* Cards: White with soft shadows */
+.card {
+  background-color: #ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  /* ~8px */
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15) !important;
+  /* Soft shadow */
+  transition: transform 0.2s ease-in-out;
+}
+
+/* No Gradients */
+.bg-gradient-primary,
+.btn-primary,
+.bg-primary {
+  background-image: none !important;
+  background-color: #4e73df !important;
+  /* Standard flat primary */
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: #ffffff;
+  /* White sidebar as per "Clean, modern UI" usually? Or standard dark? Prompt says "Light grey background", "White cards". Doesn't specify sidebar color, but modern trends often use white sidebar with light grey body. Let's go White sidebar. */
+  box-shadow: -0.15rem 0 1.75rem 0 rgba(58, 59, 69, 0.15);
+  padding-top: 1rem;
+}
+
+.sidebar .nav-link {
+  color: #5a5c69;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  color: #4e73df;
+  background-color: #f8f9fc;
+}
+
+.sidebar .brand {
+  padding: 0 1.5rem 1.5rem 1.5rem;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #4e73df;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+}
+
+/* Top Navbar */
+.top-navbar {
+  background-color: #ffffff;
+  box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+  padding: 0.75rem 1.5rem;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  display: flex;
+  justify-content: flex-end;
+  /* RTL: items start from right, but flex-end puts them to the LEFT in LTR? In RTL, flex-end is LEFT. We want them on LEFT? No. In RTL, 'flex-start' is RIGHT. 'flex-end' is LEFT. Usually profile is on the far/opposite side. */
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Icon Placeholders (if utilizing SVGs later) */
+.icon-svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 1.5;
+  /* Thin */
+}
+
+/* Utilities */
+.text-gray-800 {
+  color: #5a5c69 !important;
+}
+
+/* Soft badges */
+.bg-warning-soft {
+  background-color: rgba(246, 194, 62, 0.1);
+}
+
+.bg-success-soft {
+  background-color: rgba(28, 200, 138, 0.1);
+}
+
+.bg-info-soft {
+  background-color: rgba(54, 185, 204, 0.1);
+}
+
+.bg-danger-soft {
+  background-color: rgba(231, 74, 59, 0.1);
+}
+
+.bg-primary-soft {
+  background-color: rgba(78, 115, 223, 0.1);
+}
+
+/* Card Icons */
+.card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
